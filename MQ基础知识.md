@@ -22,7 +22,7 @@ MQ的全称是MessageQuery（消息队列），它既是一种‘先进先出’
 1、对用户信息进行验证，通过后保存在数据库中。2、发送邮件或者短信告知用户注册成功。3、发送给用户一个操作指南的通知。4、分析用户信息，向用户推荐内容等<br/>
 在这一系列的操作中，对于用户来讲，他关心的仅仅是注册是否成功，对于其他的事情，服务端就可以吧这些操作放入消息队列当中，让消息队列异步的进行这些操作。
 ## 常见的MQ有哪些？它们之间有什么区别？
-#### 现在比较常见的消息队列产品主要有  Kafka、ActiveMQ、RabbitMQ、ZeroMQ、RocketMQ、Apollo等。
+#### 现在比较常见的消息队列产品主要有  Kafka、ActiveMQ、RabbitMQ、ZeroMQ、RocketMQ等。
 ### Kafka
  Kafka是分布式的发布—订阅消息系统。它最初由LinkedIn(领英)公司发布，使用Scala语言编写，与2010年12月份开源，成为Apache的顶级项目。
    Kafka是一个高吞吐量的、持久性的、分布式发布订阅消息系统。
@@ -35,7 +35,34 @@ MQ的全称是MessageQuery（消息队列），它既是一种‘先进先出’
 分布式
    基于分布式的扩展和容错机制；Kafka的数据都会复制到几台服务器上。当某一台故障失效时，生产者和消费者转而使用其它的机器——整体健壮性。
 ### ActiveMQ
+Apache下的一个子项目。使用Java完全支持JMS1.1和J2EE 1.4规范的 JMS Provider实现，少量代码就可以高效地实现高级应用场景。可插拔的传输协议支持，比如：in-VM, TCP, SSL, NIO, UDP, multicast, JGroups and JXTA transports。RabbitMQ、ZeroMQ、ActiveMQ均支持常用的多种语言客户端 C++、Java、.Net,、Python、 Php、 Ruby等。
 ### RabbitMQ
+使用Erlang编写的一个开源的消息队列，本身支持很多的协议：AMQP，XMPP, SMTP,STOMP，也正是如此，使的它变的非常重量级，更适合于企业级的开发。同时实现了Broker架构，核心思想是生产者不会将消息直接发送给队列，消息在发送给客户端时先在中心队列排队。对路由(Routing)，负载均衡(Load balance)、数据持久化都有很好的支持。多用于进行企业级的ESB整合。
 ### ZeroMQ
+号称最快的消息队列系统，专门为高吞吐量/低延迟的场景开发，在金融界的应用中经常使用，偏重于实时数据通信场景。ZMQ能够实现RabbitMQ不擅长的高级/复杂的队列，但是开发人员需要自己组合多种技术框架，开发成本高。因此ZeroMQ具有一个独特的非中间件的模式，更像一个socket library，你不需要安装和运行一个消息服务器或中间件，因为你的应用程序本身就是使用ZeroMQ API完成逻辑服务的角色。但是ZeroMQ仅提供非持久性的队列，如果down机，数据将会丢失。如：Twitter的Storm中使用ZeroMQ作为数据流的传输。
+
+ZeroMQ套接字是与传输层无关的：ZeroMQ套接字对所有传输层协议定义了统一的API接口。默认支持 进程内(inproc) ，进程间(IPC) ，多播，TCP协议，在不同的协议之间切换只要简单的改变连接字符串的前缀。可以在任何时候以最小的代价从进程间的本地通信切换到分布式下的TCP通信。ZeroMQ在背后处理连接建立，断开和重连逻辑。
 ### RocketMQ
-### Apollo
+阿里系下开源的一款分布式、队列模型的消息中间件，原名Metaq，3.0版本名称改为RocketMQ，是阿里参照kafka设计思想使用java实现的一套mq。同时将阿里系内部多款mq产品（Notify、metaq）进行整合，只维护核心功能，去除了所有其他运行时依赖，保证核心功能最简化，在此基础上配合阿里上述其他开源产品实现不同场景下mq的架构，目前主要多用于订单交易系统。
+<table >
+ <tr style="width:100%;">
+ <td style="width:10%;">吞吐量</td>
+  <td style="width:90%;">万级的 ActiveMQ 和 RabbitMQ 的吞吐量（ActiveMQ 的性能最差）要比 十万级甚至是百万级的 RocketMQ 和 Kafka 低一个数量级。</td>
+ </tr>
+  <tr style="width:100%;">
+ <td style="width:10%;">可用性</td>
+  <td style="width:90%;">都可以实现高可用。ActiveMQ 和 RabbitMQ 都是基于主从架构实现高可用性。RocketMQ 基于分布式架构。 kafka 也是分布式的，一个数据多个副本，少数机器宕机，不会丢失数据，不会导致不可用</td>
+ </tr>
+  <tr style="width:100%;">
+ <td style="width:10%;">时效性</td>
+  <td style="width:90%;">abbitMQ 基于erlang开发，所以并发能力很强，性能极其好，延时很低，达到微秒级。其他三个都是 ms 级。</td>
+ </tr>
+  <tr style="width:100%;">
+ <td style="width:10%;">功能支持</td>
+  <td style="width:90%;">除了 Kafka，其他三个功能都较为完备。 Kafka 功能较为简单，主要支持简单的MQ功能，在大数据领域的实时计算以及日志采集被大规模使用，是事实上的标准</td>
+ </tr>
+  <tr style="width:100%;">
+ <td style="width:10%;">消息丢失</td>
+  <td style="width:90%;">ActiveMQ 和 RabbitMQ 丢失的可能性非常低， RocketMQ 和 Kafka 理论上不会丢失。</td>
+ </tr>
+ </table>
