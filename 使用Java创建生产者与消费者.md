@@ -1,6 +1,6 @@
 ## 本文利用java语言介绍如何使用Kafka来接收和发送消息。
 ## 首先我们创建一个java  Maven项目，引入如下依赖
-
+<div>
 <dependency>
 <groupId>org.apache.kafka</groupId>
 <artifactId>kafka-log4j-appender</artifactId>
@@ -18,6 +18,7 @@
 <artifactId>kafka-clients</artifactId>
 <version>2.3.0</version>
 </dependency>
+</div>
 ## 此处kafka的依赖包的版本要根据实际安装的版本而定。
 下面我们首先来创建一个生产者：
 
